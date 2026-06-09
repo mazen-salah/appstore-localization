@@ -1,0 +1,31 @@
+# ─── Secrets — never commit these ───────────────────────────────
+*.p8
+AuthKey_*.p8
+appstore_api_key.json
+*.pem
+*.key
+.env
+.env.*
+service-account*.json
+google-services.json
+GoogleService-Info.plist
+secrets.*
+
+# ─── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+
+# ─── Work artifacts ─────────────────────────────────────────────
+/tmp/
+out/
+bands/
+*.log
+
+# ─── OS ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

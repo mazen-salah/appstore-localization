@@ -1,0 +1,4 @@
+# Python dependencies for scripts/compose.py (screenshot compositing).
+# scripts/check_metadata.py uses only the standard library.
+numpy>=1.24
+Pillow>=10.0
