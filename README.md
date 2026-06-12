@@ -24,6 +24,63 @@ deliver`.
 
 ---
 
+## Real results
+
+Two production apps shipped their App Store presence through this skill —
+**24 localized metadata sets and 114 localized screenshots** between them,
+each app localized end-to-end in **under 10 minutes**.
+Everything below is unedited output: one English source screenshot in, a
+localized set out, the in-phone app UI bit-identical across every locale.
+
+### AI Pregnancy Test Checker — metadata in 12 languages
+
+![The same App Store screenshot in English, German, Japanese and Arabic — identical phone UI, only the caption band re-rendered](docs/results/pregnancy-hero.jpg)
+
+### Antique Identifier — metadata + screenshots in 13 languages
+
+![The same App Store screenshot in English, Korean, Russian and Simplified Chinese — identical phone UI, only the caption band re-rendered](docs/results/antique-identify.jpg)
+
+Note the Arabic panel: right-to-left script, correct diacritics, same layout —
+and the phone UI under it never went through an image model, so it stays
+pixel-sharp. The decorative laurels, stars and dividers survive untouched
+thanks to the glyph + colour diff mask.
+
+### The metadata reads native, and it all fits
+
+Subtitles from the shipped fastlane metadata (Apple's limit is 30 characters):
+
+| Locale | AI Pregnancy Test Checker | Antique Identifier |
+| --- | --- | --- |
+| 🇩🇪 `de-DE` | Schwangerschaftstest KI-App | Antiquitäten per Foto schätzen |
+| 🇯🇵 `ja` | うっすら陽性も写真でAI判定 | 写真でお宝を鑑定・価値査定 |
+| 🇰🇷 `ko` | 희미한 선 AI 판독·양성 음성 임신테스트 | 사진으로 빈티지·수집품 가치 감정 |
+| 🇷🇺 `ru` | ИИ сканер: слабая полоска | Оценка винтажа по фото |
+| 🇸🇦 `ar-SA` | حاسبة و ماسح الحمل بالذكاء | صوّر التحف والمقتنيات وقيّمها |
+| 🇨🇳 `zh-Hans` | AI拍照秒读 浅线置信分析 | 拍照鉴定古董收藏品 估价更轻松 |
+
+Running `scripts/check_metadata.py` over both apps' full metadata trees:
+**no errors across all 25 locale sets** — every subtitle ≤ 30, every keyword
+field ≤ 100, every description ≤ 4000.
+
+### Keywords are researched, not translated
+
+A few things a literal translation of the English keyword list could never
+produce — these came out of Astro's per-storefront popularity data:
+
+- **Japanese** (pregnancy): targets ドゥーテスト — Rohto's *Do-Test*, a test
+  brand that only exists in Japan — plus 妊活 ("ninkatsu", the Japanese
+  trying-to-conceive culture word) and 基礎体温 / 高温期, the BBT-charting
+  terms Japanese users actually search.
+- **Korean** (antiques): 청자 and 백자 — Goryeo celadon and Joseon white
+  porcelain, the categories Korean collectors search for.
+- **Turkish** (antiques): *mezat* (auction) and *çini* (İznik tilework).
+- **Russian** (antiques): *клеймо* (maker's hallmark) and *барахолка*
+  (flea market).
+- **German** (pregnancy): *Kinderwunsch* and *Frühtest* — the vocabulary of
+  the German TTC community, not dictionary translations of "pregnancy test".
+
+---
+
 ## Why this exists
 
 **Screenshots.** Image models cap their output around a ~1500px long edge. Feed a
@@ -126,10 +183,12 @@ exceeded (handy in CI).
 ├── scripts/
 │   ├── compose.py                    # screenshot band-translate + composite
 │   └── check_metadata.py             # App Store field-limit linter
-└── references/
-    ├── screenshot-pipeline.md        # compose.py internals + tuning
-    ├── prompt-templates.md           # ready-to-use Gemini prompts (incl. RTL/CJK)
-    └── keyword-research.md           # Astro discover → validate → pack
+├── references/
+│   ├── screenshot-pipeline.md        # compose.py internals + tuning
+│   ├── prompt-templates.md           # ready-to-use Gemini prompts (incl. RTL/CJK)
+│   └── keyword-research.md           # Astro discover → validate → pack
+└── docs/
+    └── results/                      # real output from two shipped apps (see "Real results")
 ```
 
 ---
